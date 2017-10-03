@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>txt4tts_RU</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>JAVA_COMMON_LOC</name>
+			<type>2</type>
+			<locationURI>JAVA_COMMON_LOC</locationURI>
+		</link>
+	</linkedResources>
+	<variableList>
+		<variable>
+			<name>DIC_LOC</name>
+			<value>$%7BPARENT-1-PROJECT_LOC%7D/Android/app/src/main/assets/dic</value>
+		</variable>
+		<variable>
+			<name>JAVA_COMMON_LOC</name>
+			<value>file:/c:/Users/Yras/AndroidStudioProjects/txt4tts_RU/Android/app/src/main/java</value>
+		</variable>
+	</variableList>
+</projectDescription>
