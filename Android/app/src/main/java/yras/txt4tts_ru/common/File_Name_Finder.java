@@ -49,7 +49,7 @@ public class File_Name_Finder {
     public static boolean Find(String Full_File_Name) 
     {
     	
-      Pattern pt_name_ext = Pattern.compile("([:\\.\\w/]*)/([\\w]*).(\\w*)$"); //�?мя и расширение
+      Pattern pt_name_ext = Pattern.compile("([:\\.\\w/]*)/([\\w]*).(\\w*)$"); //Р?РјСЏ Рё СЂР°СЃС€РёСЂРµРЅРёРµ
       Matcher mt = pt_name_ext.matcher(Full_File_Name);
     	
       if (mt.find()) 
