@@ -80,10 +80,10 @@ public class Java_RU_text4tts
         
         
         
-      //  XML_SAX_Find_Dialogs_in_Sentence Find_Dia = new XML_SAX_Find_Dialogs_in_Sentence();
-      //  Find_Dia.convert(AppPath + "tests/test2/resp_s.xml", AppPath + "tests/test2/respsDia.xml");
+        XML_SAX_Find_Dialogs_in_Sentence Find_Dia = new XML_SAX_Find_Dialogs_in_Sentence();
+        Find_Dia.split(AppPath, AppPath + "tests/test2/resp_s.xml", AppPath + "tests/test2/respsDia.xml");
 	    
-      //  XML_Formatter.Format_simple(AppPath + "tests/test2/respsDia.xml", AppPath + "tests/test2/resps_Dia.xml");
+        XML_Formatter.Format_simple(AppPath + "tests/test2/respsDia.xml", AppPath + "tests/test2/resps_Dia.xml");
   
         
         
