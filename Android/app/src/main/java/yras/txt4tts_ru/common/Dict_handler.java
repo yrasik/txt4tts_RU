@@ -153,6 +153,73 @@ public class Dict_handler {
 		return Processed_line;
 	}
 
+	
+	public String replaceFirst(String Sentence_line) {
+		String Processed_line = Sentence_line;
+		String line_DIC;
+		Processing = Processing_status_enum.STATE_WORK;
+		try {
+
+		//	Log.d("4", "TXT_to_XML <-----Processed_line---first--->" + Processed_line);
+
+			// инициализируем поток вывода из файлу
+			FileInputStream fis_DIC = new FileInputStream(Full_Dict_File_Name);
+			InputStreamReader isr_DIC = new InputStreamReader(fis_DIC, Charset.forName("UTF-8"));
+			BufferedReader br_DIC = new BufferedReader(isr_DIC);
+			int i = 0;
+			boolean escape = false;
+
+			while (((line_DIC = br_DIC.readLine()) != null) && (escape == false)) {
+				i++;
+				// System.out.println("line " + i + ": ");
+
+				if (get_Groups(line_DIC)) {
+					// rxp.Find(rxp.get_Group_for_Find(), line_IN);
+					// System.out.println(">>>>>> 1 >>>>>>");
+                  //  Log.d("4", "TXT_to_XML <-----Processed_line---before--->" + Processed_line);
+
+					//if(Group_for_Replace.isEmpty()) {
+                        String temp = Processed_line;
+					//	Processed_line = Processed_line.replaceAll(Group_for_Find, "");
+
+					//}
+					//else {
+					Processed_line = Processed_line.replaceFirst(Group_for_Find, Group_for_Replace);
+					Processed_line = Processed_line.replaceAll("null", "");
+
+					//}
+
+					//	Log.d("4", "TXT_to_XML <-----3------" + Group_for_Find + "!!!!!!!!!!" + Group_for_Replace + "----" + Processed_line + "++++" + temp);
+
+
+
+
+					//  Log.d("4", "TXT_to_XML <-----Processed_line---after--->" + Processed_line);
+                  //  Log.d("4", "TXT_to_XML <-----Group_for_Find------>" + Group_for_Find);
+                  //  Log.d("4", "TXT_to_XML <-----Group_for_Replace------>" + Group_for_Replace);
+
+                    // System.out.println(Processed_line);
+					// System.out.println("<<<<<< 2 <<<<<<");
+				} 
+				else if (Processing == Processing_status_enum.STATE_EXIT) {
+					escape = true;
+				}
+			}
+			br_DIC.close();
+			isr_DIC.close();
+			// закрываем поток чтения файла
+			fis_DIC.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Processed_line = Sentence_line;
+			Log.d("4", "TXT_to_XML <--ERROR-->" + e.getMessage()  );
+		}
+
+		//Log.d("4", "TXT_to_XML <-----Processed_line---return--->" + Processed_line);
+		return Processed_line;
+	}	
+	
+	
 	private boolean get_Groups(String Dict_line) {
 		mt = pt_escape.matcher(Dict_line);
 
@@ -277,4 +344,108 @@ public class Dict_handler {
 
 	}
 
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public int FindFirst(String Sentence_line) {
+		String Processed_line = Sentence_line;
+		String line_DIC;
+		int index_end = 0;
+		Processing = Processing_status_enum.STATE_WORK;
+		try {
+
+		//	Log.d("4", "TXT_to_XML <-----Processed_line---first--->" + Processed_line);
+
+			// инициализируем поток вывода из файлу
+			FileInputStream fis_DIC = new FileInputStream(Full_Dict_File_Name);
+			InputStreamReader isr_DIC = new InputStreamReader(fis_DIC, Charset.forName("UTF-8"));
+			BufferedReader br_DIC = new BufferedReader(isr_DIC);
+			int i = 0;
+			boolean escape = false;
+
+			while (((line_DIC = br_DIC.readLine()) != null) && (escape == false)) {
+				i++;
+				// System.out.println("line " + i + ": ");
+
+				if (get_Groups(line_DIC)) {
+					// rxp.Find(rxp.get_Group_for_Find(), line_IN);
+					// System.out.println(">>>>>> 1 >>>>>>");
+                  //  Log.d("4", "TXT_to_XML <-----Processed_line---before--->" + Processed_line);
+
+					//if(Group_for_Replace.isEmpty()) {
+                        String temp = Processed_line;
+					//	Processed_line = Processed_line.replaceAll(Group_for_Find, "");
+
+					//}
+					//else {
+                        
+                        index_end = FindFirst_Rex(Group_for_Find, Processed_line);   
+                        
+                        if(index_end != 0)
+                        	return index_end;
+                        
+					//Processed_line = Processed_line.replaceFirst(Group_for_Find, Group_for_Replace);
+					//Processed_line = Processed_line.replaceAll("null", "");
+
+					//}
+
+					//	Log.d("4", "TXT_to_XML <-----3------" + Group_for_Find + "!!!!!!!!!!" + Group_for_Replace + "----" + Processed_line + "++++" + temp);
+
+
+
+
+					//  Log.d("4", "TXT_to_XML <-----Processed_line---after--->" + Processed_line);
+                  //  Log.d("4", "TXT_to_XML <-----Group_for_Find------>" + Group_for_Find);
+                  //  Log.d("4", "TXT_to_XML <-----Group_for_Replace------>" + Group_for_Replace);
+
+                    // System.out.println(Processed_line);
+					// System.out.println("<<<<<< 2 <<<<<<");
+				} 
+				else if (Processing == Processing_status_enum.STATE_EXIT) {
+					escape = true;
+				}
+			}
+			br_DIC.close();
+			isr_DIC.close();
+			// закрываем поток чтения файла
+			fis_DIC.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Processed_line = Sentence_line;
+			Log.d("4", "TXT_to_XML <--ERROR-->" + e.getMessage()  );
+		}
+
+		//Log.d("4", "TXT_to_XML <-----Processed_line---return--->" + Processed_line);
+		return 0;
+	}		
+	
+
+	
+	private int FindFirst_Rex(String RegExp, String line) {
+		Pattern pt = Pattern.compile(RegExp);
+		Matcher mt = pt.matcher(line);
+		int index_end = 0;
+		mt.find();
+		
+		try {
+			index_end = mt.end();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+		return index_end;
+	}	
+	
+	
 }
