@@ -84,9 +84,9 @@ public class XML_SAX_Find_Dialogs_in_Sentence {
 class SAXParsDialogs extends DefaultHandler {		
 
     enum TAG_P_enum {    
-		BEGIN_TAG__P,    // Начало абзаца
-		CONTINUE_TAG__P, // Последующие предложения в абзаце
-		END_TAG__P       //Заключительное предложение в абзаце
+		BEGIN_TAG__P,    // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+		CONTINUE_TAG__P, // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+		END_TAG__P       //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	}	
 	    enum TAG_S_enum {
 			BEGIN_TAG__S,
@@ -94,19 +94,23 @@ class SAXParsDialogs extends DefaultHandler {
 		}
 
 	    enum DIALOG_enum {
-			BEGIN_AUTOR,
-			END_AUTOR,
-			BEGIN_PERSON_1,
-			END_PERSON_1,
-			BEGIN_PERSON_2,
-			END_PERSON_2,
+			IN_AUTOR,
+			IN_PERSON_1,
+			IN_PERSON_2,
 		}	    
+		
+	 enum PERSON_enum {
+	    PERSON_1,
+	    PERSON_2,
+	    PERSON_UNKNOWN,
+	   } 
 	    
-	    private TAG_P_enum TAG_P;
+	 private TAG_P_enum TAG_P;
 		private TAG_S_enum TAG_S;
 		private DIALOG_enum DIALOG;
+		private PERSON_enum person_last;
 		
-		private Dict_handler Dict_begin_autor;	
+		private Dict_handler Dict_bPERSON_enumegin_autor;	
 		private Dict_handler Dict_begin_person;
 		private String thisElement = "";
 		private Writer out;
@@ -194,12 +198,54 @@ class SAXParsDialogs extends DefaultHandler {
 			
 			if (qName.equals("s")) {
 				
-				if(	(TAG_P == TAG_P_enum.BEGIN_TAG__P) &&  //Начало реплики персоны
-					(TAG_S == TAG_S_enum.BEGIN_TAG__S) &&
-					(DIALOG == DIALOG_enum.BEGIN_AUTOR) &&
-					( 0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content) ) )
+				if(	(TAG_P == TAG_P_enum.BEGIN_TAG__P) &&
+		   			(TAG_S == TAG_S_enum.BEGIN_TAG__S)
 				  )
 				{
+				
+				switch(DIALOG)
+				{
+				case IN_AUTOR:
+				  if( 0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content) ) )
+				  {
+				    switch(person_last)
+				    {
+				    case PERSON_1:
+				      person_last = PERSON_2;
+				      DIALOG = IN_PERSON_2;
+				      break;
+	      case PERSON_2:
+	        person_last = PERSON_1;
+	        DIALOG = IN_PERSON_2;
+	        break;
+	      case PERSON_UNKNOWN:
+	        person_last = PERSON_1;
+	        DIALOG = IN_PERSON_1;
+	        break;
+				    }
+				  }
+				  break;
+			 case IN_PERSON_1:
+			   if( 0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content) ) )
+				  {
+				  
+				  }
+			 	 else 
+				    if( 0 != (index_Dict_begin_autor =  Dict_begin_autor.FindFirst(paragraph_content) ) )
+				    {
+				  
+				    }
+			   break;
+			 case IN_PERSON_2:
+			 
+			   break;
+		 	default :
+				}
+				
+			 
+						( 0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content) ) )
+					
+					
 					
 					
 				}

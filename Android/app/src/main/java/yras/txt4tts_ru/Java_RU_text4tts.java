@@ -25,7 +25,7 @@ import yras.txt4tts_ru.common.XML_Formatter;
 import yras.txt4tts_ru.common.TXT_to_XML;
 import yras.txt4tts_ru.common.XML_SAX_Paragraph_to_Sentence_split;
 import yras.txt4tts_ru.common.XML_SAX_Sentences_and_RegEXP;
-
+import yras.txt4tts_ru.common.XML_SAX_Find_Dialogs_in_Sentence;
 
 
 public class Java_RU_text4tts 
@@ -39,7 +39,7 @@ public class Java_RU_text4tts
 	{				
 	  getFileNameFromFolder(AppPath);
 	  
-	  
+	/*  
 		TXT_to_XML  txt2xml = new TXT_to_XML();
 			
 	    System.out.println("txt -> xml");
@@ -59,8 +59,14 @@ public class Java_RU_text4tts
 
         p2s_Rex.find_and_replace(AppPath + "tests/test1/resp_s.xml", AppPath + "tests/test1/resp_s3.xml", AppPath + "dic/chisla.rex", Dict_File_TYPE_enum.REX);
         XML_Formatter.Format_simple(AppPath + "tests/test1/resp_s3.xml", AppPath + "tests/test1/resp_s4.xml");
+	*/    
+		        
+        
+        XML_SAX_Find_Dialogs_in_Sentence Find_Dia = new XML_SAX_Find_Dialogs_in_Sentence();
+        Find_Dia.split(AppPath, AppPath + "tests/test2/resp_s.xml", AppPath + "tests/test2/respsDia.xml");
 	    
-		
+        XML_Formatter.Format_simple(AppPath + "tests/test2/respsDia.xml", AppPath + "tests/test2/resps_Dia.xml");
+ 
 		
 	      	System.out.println("Complete...");
 		
