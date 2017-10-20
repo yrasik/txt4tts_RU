@@ -42,7 +42,6 @@ public class XML_SAX_Find_Dialogs_in_Sentence {
 	private String Full_Fout_Name;
 	private String AppPath;
 
-
 	public XML_SAX_Find_Dialogs_in_Sentence() {
 
 	}
@@ -78,91 +77,76 @@ public class XML_SAX_Find_Dialogs_in_Sentence {
 
 }
 
+class SAXParsDialogs extends DefaultHandler {
 
+	enum TAG_P_enum {
+		BEGIN_TAG__P, // ������ ������
+		CONTINUE_TAG__P, // �����������
+							// ����������� �
+							// ������
+		END_TAG__P // ��������������
+					// ����������� � ������
+	}
 
+	enum DIALOG_enum {
+		IN_AUTOR, IN_PERSON_1, IN_PERSON_2,
+	}
 
-class SAXParsDialogs extends DefaultHandler {		
+	enum PERSON_enum {
+		PERSON_1, PERSON_2, PERSON_UNKNOWN,
+	}
 
-    enum TAG_P_enum {    
-		BEGIN_TAG__P,    // ������ ������
-		CONTINUE_TAG__P, // ����������� ����������� � ������
-		END_TAG__P       //�������������� ����������� � ������
-	}	
-	    enum TAG_S_enum {
-			BEGIN_TAG__S,
-			END_TAG__S
+	private TAG_P_enum TAG_P;
+	private DIALOG_enum DIALOG;
+	private PERSON_enum person_last;
+
+	private Dict_handler Dict_begin_autor;
+	private Dict_handler Dict_begin_person;
+	private Dict_handler Dict_continue_autor;
+	private Dict_handler Dict_continue_person;
+	private String thisElement = "";
+	private Writer out;
+	private String AppPath;
+	private String paragraph_content;
+
+	public SAXParsDialogs(String AppPath, String Full_Fout_Name) {
+		try {
+			this.AppPath = AppPath;
+			Dict_begin_autor = new Dict_handler(this.AppPath + "dic/find_dialogs/begin_autor.rex",
+					Dict_File_TYPE_enum.REX);
+			Dict_begin_person = new Dict_handler(this.AppPath + "dic/find_dialogs/begin_person.rex",
+					Dict_File_TYPE_enum.REX);
+
+			Dict_continue_autor = new Dict_handler(this.AppPath + "dic/find_dialogs/continue_autor.rex",
+					Dict_File_TYPE_enum.REX);
+			Dict_continue_person = new Dict_handler(this.AppPath + "dic/find_dialogs/continue_person.rex",
+					Dict_File_TYPE_enum.REX);
+
+			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Full_Fout_Name), "UTF-8"));
+
+			TAG_P = TAG_P_enum.END_TAG__P;
+			DIALOG = DIALOG_enum.IN_AUTOR;
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-	    enum DIALOG_enum {
-			IN_AUTOR,
-			IN_PERSON_1,
-			IN_PERSON_2,
-		}	    
-		
-	 enum PERSON_enum {
-	    PERSON_1,
-	    PERSON_2,
-	    PERSON_UNKNOWN,
-	   } 
-	    
-	 private TAG_P_enum TAG_P;
-		private TAG_S_enum TAG_S;
-		private DIALOG_enum DIALOG;
-		private PERSON_enum person_last;
-		
-		private Dict_handler Dict_bPERSON_enumegin_autor;	
-		private Dict_handler Dict_begin_person;
-		private String thisElement = "";
-		private Writer out;
-		private String AppPath;
-		private String paragraph_content;
+	}
 
-		public SAXParsDialogs(String AppPath, String Full_Fout_Name) {
-			try {
-				this.AppPath = AppPath;
-				Dict_begin_autor = new Dict_handler(this.AppPath +"dic/find_dialogs/begin_autor.rex", Dict_File_TYPE_enum.REX);
-				Dict_begin_person = new Dict_handler(this.AppPath +"dic/find_dialogs/begin_person.rex", Dict_File_TYPE_enum.REX);
-				
-				out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Full_Fout_Name), "UTF-8"));
+	@Override
+	public void startDocument() throws SAXException {
+		// System.out.println("Start parse XML...");
+		TAG_P = TAG_P_enum.END_TAG__P;
+		DIALOG = DIALOG_enum.IN_AUTOR;
 
-			    TAG_P = TAG_P_enum.END_TAG__P;
-				TAG_S = TAG_S_enum.END_TAG__S;
-				DIALOG = DIALOG_enum.BEGIN_AUTOR;				
-					
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
+		try {
+			out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		@Override
-		public void startDocument() throws SAXException {
-			//System.out.println("Start parse XML...");
-		    TAG_P = TAG_P_enum.END_TAG__P;
-			TAG_S = TAG_S_enum.END_TAG__S;
-			DIALOG = DIALOG_enum.BEGIN_AUTOR;
+	}
 
-			try {
-				out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	@Override
 	public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
 		thisElement = qName;
@@ -173,167 +157,206 @@ class SAXParsDialogs extends DefaultHandler {
 			e.printStackTrace();
 		}
 
-		
 		if (qName.equals("p")) {
-			TAG_P = TAG_P_enum.BEGIN_TAG__P;			
-		}		
-
-		
-		if (qName.equals("s")) {
-			TAG_S = TAG_S_enum.BEGIN_TAG__S;			
+			TAG_P = TAG_P_enum.BEGIN_TAG__P;
 		}
-		
+
+		if (qName.equals("s")) {
+
+		}
+
 	}
 
+	@Override
+	public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
+		int index_Dict_begin_autor;
+		int index_Dict_begin_person;
 
-		@Override
-		public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
-  		  int index_Dict_begin_autor;	
-  		  int index_Dict_begin_person;
-  		
-  		
-			if (qName.equals("p")) {
-				TAG_P = TAG_P_enum.END_TAG__P;				
-			}
-			
-			if (qName.equals("s")) {
-				
-				if(	(TAG_P == TAG_P_enum.BEGIN_TAG__P) &&
-		   			(TAG_S == TAG_S_enum.BEGIN_TAG__S)
-				  )
-				{
-				
-				switch(DIALOG)
-				{
-				case IN_AUTOR:
-				  if( 0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content) ) )
-				  {
-				    switch(person_last)
-				    {
-				    case PERSON_1:
-				      person_last = PERSON_2;
-				      DIALOG = IN_PERSON_2;
-				      break;
-	      case PERSON_2:
-	        person_last = PERSON_1;
-	        DIALOG = IN_PERSON_2;
-	        break;
-	      case PERSON_UNKNOWN:
-	        person_last = PERSON_1;
-	        DIALOG = IN_PERSON_1;
-	        break;
-				    }
-				  }
-				  break;
-			 case IN_PERSON_1:
-			   if( 0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content) ) )
-				  {
-				  
-				  }
-			 	 else 
-				    if( 0 != (index_Dict_begin_autor =  Dict_begin_autor.FindFirst(paragraph_content) ) )
-				    {
-				  
-				    }
-			   break;
-			 case IN_PERSON_2:
-			 
-			   break;
-		 	default :
-				}
-				
-			 
-						( 0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content) ) )
-					
-					
-					
-					
-				}
-					
-					
-				
-				
-					
-					
-					
-					
-					
-				
-				TAG_P = TAG_P_enum.CONTINUE_TAG__P;
-				TAG_S = TAG_S_enum.END_TAG__S;
-
-				
-				
-
-		/*		
-				String Sentence = Dict.replaceAll(paragraph_content);
-				Log.d("4", "TXT_to_XML <-----endElement--->" + paragraph_content);
-				try {
-					out.write(Sentence);
-					//System.out.println(Sentence);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}				
-			*/	
-				
-			}
-
-/*
-			try {
-				out.write("</" + qName + ">");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-*/
-			
-			//paragraph_content
-
-			thisElement = "";
+		if (qName.equals("p")) {
+			TAG_P = TAG_P_enum.END_TAG__P;
 		}
 
-		
-		
-		
-		
-		
-		
-		@Override
-		public void characters(char[] ch, int start, int length) throws SAXException {
-			if (thisElement.equals("metadata")) {
-				// doc.setId(new Integer(new String(ch, start, length)));
-			}
-			
-			if (thisElement.equals("s")) {
-				paragraph_content += String.copyValueOf(ch, start, length);
+		if (qName.equals("s")) {
 
-			
+			if (TAG_P == TAG_P_enum.BEGIN_TAG__P) {
+				switch (DIALOG) {
+				case IN_AUTOR:
+					if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+						switch (person_last) {
+						case PERSON_1:
+							person_last = PERSON_enum.PERSON_2;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_2:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_UNKNOWN:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_1;
+							break;
+						}
+						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+					}
+					break;
+				case IN_PERSON_1:
+					if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+						switch (person_last) {
+						case PERSON_1:
+							person_last = PERSON_enum.PERSON_2;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_2:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_UNKNOWN:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_1;
+							break;
+						}
+						
+					paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
+						DIALOG = DIALOG_enum.IN_AUTOR;
+						
+						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+					}
+					break;
+				case IN_PERSON_2:
+					if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+						switch (person_last) {
+						case PERSON_1:
+							person_last = PERSON_enum.PERSON_2;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_2:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_UNKNOWN:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_1;
+							break;
+						}
+						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+
+					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
+						DIALOG = DIALOG_enum.IN_AUTOR;
+						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+
+					}
+					break;
+				default:
+				}
+				TAG_P = TAG_P_enum.CONTINUE_TAG__P;
+				
+			}
+
+			while (true) {
+
+				switch (DIALOG) {
+				case IN_AUTOR:
+					if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+						switch (person_last) {
+						case PERSON_1:
+							person_last = PERSON_enum.PERSON_2;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_2:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_UNKNOWN:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_1;
+							break;
+						}
+
+					}
+					break;
+				case IN_PERSON_1:
+					if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+						switch (person_last) {
+						case PERSON_1:
+							person_last = PERSON_enum.PERSON_2;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_2:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_UNKNOWN:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_1;
+							break;
+						}
+					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
+						DIALOG = DIALOG_enum.IN_AUTOR;
+					}
+					break;
+				case IN_PERSON_2:
+					if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+						switch (person_last) {
+						case PERSON_1:
+							person_last = PERSON_enum.PERSON_2;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_2:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_2;
+							break;
+						case PERSON_UNKNOWN:
+							person_last = PERSON_enum.PERSON_1;
+							DIALOG = DIALOG_enum.IN_PERSON_1;
+							break;
+						}
+					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
+						DIALOG = DIALOG_enum.IN_AUTOR;
+					}
+					break;
+				default:
+				}				
+				
+			}
+
+		}
+
+		thisElement = "";
+	}
+
+	@Override
+	public void characters(char[] ch, int start, int length) throws SAXException {
+		if (thisElement.equals("metadata")) {
+			// doc.setId(new Integer(new String(ch, start, length)));
+		}
+
+		if (thisElement.equals("s")) {
+			paragraph_content += String.copyValueOf(ch, start, length);
+
 			if (TAG_S == TAG_S_enum.BEGIN_TAG__S) {
 
 			} else {
 				try {
-				out.write(String.copyValueOf(ch, start, length));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			}
-			
-			
-			
-			}
-			
-
-
-		}
-
-		@Override
-		public void endDocument() {
-			//System.out.println("Stop parse XML...");
-
-			try {
-				out.flush();
-			} catch (Exception e) {
-				e.printStackTrace();
+					out.write(String.copyValueOf(ch, start, length));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 
 		}
+
 	}
+
+	@Override
+	public void endDocument() {
+		// System.out.println("Stop parse XML...");
+
+		try {
+			out.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+}
