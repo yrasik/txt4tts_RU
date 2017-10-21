@@ -80,12 +80,10 @@ public class XML_SAX_Find_Dialogs_in_Sentence {
 class SAXParsDialogs extends DefaultHandler {
 
 	enum TAG_P_enum {
-		BEGIN_TAG__P, // ������ ������
-		CONTINUE_TAG__P, // �����������
-							// ����������� �
-							// ������
-		END_TAG__P // ��������������
-					// ����������� � ������
+		BEGIN_TAG__P, CONTINUE_TAG__P,
+
+		END_TAG__P
+
 	}
 
 	enum DIALOG_enum {
@@ -177,6 +175,7 @@ class SAXParsDialogs extends DefaultHandler {
 		}
 
 		if (qName.equals("s")) {
+			Log.d("4", "TXT_to_XML -----Full_Fout_Name------>" + Full_Fout_Name);
 
 			if (TAG_P == TAG_P_enum.BEGIN_TAG__P) {
 				switch (DIALOG) {
@@ -215,11 +214,11 @@ class SAXParsDialogs extends DefaultHandler {
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
 						}
-						
-					paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+
+						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
 						DIALOG = DIALOG_enum.IN_AUTOR;
-						
+
 						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
 					}
 					break;
@@ -250,10 +249,11 @@ class SAXParsDialogs extends DefaultHandler {
 				default:
 				}
 				TAG_P = TAG_P_enum.CONTINUE_TAG__P;
-				
+
 			}
 
-			while (true) {
+			for (int i = 0; i < 3; i++) { // Вряд-ли больше 3-х раз сменится
+											// говорящий впредложении...
 
 				switch (DIALOG) {
 				case IN_AUTOR:
@@ -272,6 +272,7 @@ class SAXParsDialogs extends DefaultHandler {
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
 						}
+						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 
 					}
 					break;
@@ -290,9 +291,14 @@ class SAXParsDialogs extends DefaultHandler {
 							person_last = PERSON_enum.PERSON_1;
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
+
+							paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+
 						}
 					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
 						DIALOG = DIALOG_enum.IN_AUTOR;
+						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+
 					}
 					break;
 				case IN_PERSON_2:
@@ -310,15 +316,24 @@ class SAXParsDialogs extends DefaultHandler {
 							person_last = PERSON_enum.PERSON_1;
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
+
+							paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+
 						}
 					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
 						DIALOG = DIALOG_enum.IN_AUTOR;
+						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+
 					}
 					break;
 				default:
-				}				
-				
+				}
+
 			}
+			
+			
+			paragraph_content = "";
+			
 
 		}
 
@@ -333,16 +348,6 @@ class SAXParsDialogs extends DefaultHandler {
 
 		if (thisElement.equals("s")) {
 			paragraph_content += String.copyValueOf(ch, start, length);
-
-			if (TAG_S == TAG_S_enum.BEGIN_TAG__S) {
-
-			} else {
-				try {
-					out.write(String.copyValueOf(ch, start, length));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 
 		}
 
