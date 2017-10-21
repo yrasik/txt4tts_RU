@@ -136,7 +136,8 @@ class SAXParsDialogs extends DefaultHandler {
 		// System.out.println("Start parse XML...");
 		TAG_P = TAG_P_enum.END_TAG__P;
 		DIALOG = DIALOG_enum.IN_AUTOR;
-
+		paragraph_content = "";
+		person_last = PERSON_enum.PERSON_UNKNOWN;
 		try {
 			out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		} catch (Exception e) {
@@ -175,7 +176,7 @@ class SAXParsDialogs extends DefaultHandler {
 		}
 
 		if (qName.equals("s")) {
-			Log.d("4", "TXT_to_XML -----Full_Fout_Name------>" + Full_Fout_Name);
+			Log.d("4", "---1->" + paragraph_content);
 
 			if (TAG_P == TAG_P_enum.BEGIN_TAG__P) {
 				switch (DIALOG) {
@@ -195,6 +196,8 @@ class SAXParsDialogs extends DefaultHandler {
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
 						}
+						
+						Log.d("4", "---2->" + Dict_begin_person.replaceFirst(paragraph_content));
 						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 					}
 					break;
@@ -214,11 +217,11 @@ class SAXParsDialogs extends DefaultHandler {
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
 						}
-
+						Log.d("4", "---3->" + Dict_begin_person.replaceFirst(paragraph_content));
 						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
 						DIALOG = DIALOG_enum.IN_AUTOR;
-
+						Log.d("4", "---4->" + Dict_begin_autor.replaceFirst(paragraph_content));
 						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
 					}
 					break;
@@ -238,10 +241,12 @@ class SAXParsDialogs extends DefaultHandler {
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
 						}
+						Log.d("4", "---5->" + Dict_begin_person.replaceFirst(paragraph_content));
 						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 
 					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
 						DIALOG = DIALOG_enum.IN_AUTOR;
+						Log.d("4", "---6->" + Dict_begin_autor.replaceFirst(paragraph_content));
 						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
 
 					}
@@ -291,10 +296,9 @@ class SAXParsDialogs extends DefaultHandler {
 							person_last = PERSON_enum.PERSON_1;
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
-
+						}
 							paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 
-						}
 					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
 						DIALOG = DIALOG_enum.IN_AUTOR;
 						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
@@ -316,10 +320,9 @@ class SAXParsDialogs extends DefaultHandler {
 							person_last = PERSON_enum.PERSON_1;
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
-
+						}
 							paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 
-						}
 					} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
 						DIALOG = DIALOG_enum.IN_AUTOR;
 						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);

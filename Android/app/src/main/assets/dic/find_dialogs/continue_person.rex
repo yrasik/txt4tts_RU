@@ -6,4 +6,4 @@
 
 
 #мельницы, – он занялся нами не на шутку
-([а-я][\,\?\!])(\s[-–]\s[а-я])=$1</voice><__PERSON__ voice name="__VOICE_PERSON__" gender="__GENDER_PERSON__" age="__AGE_PERSON__">$2
+([а-я][\,\?\!])(\s[-–]\s[а-я])=$1</voice><__PERSON__ voice name:"__VOICE_PERSON__" gender:"__GENDER_PERSON__" age:"__AGE_PERSON__">$2
