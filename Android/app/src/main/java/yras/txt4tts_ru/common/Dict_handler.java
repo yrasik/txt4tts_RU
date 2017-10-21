@@ -410,6 +410,10 @@ public class Dict_handler {
 		if (mt.find()) {
 			try {
 				index_end = mt.end();
+				for (int i = 1; i <= mt.groupCount(); i++) {
+					System.out.println("FindFirst_Rex " + i + " >>> '" + mt.group(i) + "' <<<<");
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();	
 			}
