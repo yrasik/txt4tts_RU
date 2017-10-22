@@ -176,13 +176,12 @@ class SAXParsDialogs extends DefaultHandler {
 		}
 
 		if (qName.equals("s")) {
-			Log.d("4", "====================================");	
+			Log.d("4", "====================================");
 			Log.d("4", "---1->" + paragraph_content);
 			Log.d("4", "---1-> TAG_P =" + TAG_P);
 			Log.d("4", "---1-> DIALOG =" + DIALOG);
 			Log.d("4", "---1-> person_last =" + person_last);
-			
-			
+
 			if (TAG_P == TAG_P_enum.BEGIN_TAG__P) {
 				switch (DIALOG) {
 				case IN_AUTOR:
@@ -201,7 +200,7 @@ class SAXParsDialogs extends DefaultHandler {
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
 						}
-						
+
 						Log.d("4", "---2->" + Dict_begin_person.replaceFirst(paragraph_content));
 						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 					}
@@ -262,16 +261,103 @@ class SAXParsDialogs extends DefaultHandler {
 
 			}
 
+			////////////////////////////////
+			Log.d("4", "-----7->~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			Log.d("4", "-----7->" + paragraph_content);
+			Log.d("4", "-----7-> TAG_P =" + TAG_P);
+			Log.d("4", "-----7-> DIALOG =" + DIALOG);
+			Log.d("4", "-----7-> person_last =" + person_last);
+			
+			
+			switch (DIALOG) {
+			case IN_AUTOR:
+				if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+					switch (person_last) {
+					case PERSON_1:
+						person_last = PERSON_enum.PERSON_2;
+						DIALOG = DIALOG_enum.IN_PERSON_2;
+						break;
+					case PERSON_2:
+						person_last = PERSON_enum.PERSON_1;
+						DIALOG = DIALOG_enum.IN_PERSON_2;
+						break;
+					case PERSON_UNKNOWN:
+						person_last = PERSON_enum.PERSON_1;
+						DIALOG = DIALOG_enum.IN_PERSON_1;
+						break;
+					}
+
+					Log.d("4", "---8->" + Dict_begin_person.replaceFirst(paragraph_content));
+					paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+				}
+				break;
+			case IN_PERSON_1:
+				if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+					switch (person_last) {
+					case PERSON_1:
+						person_last = PERSON_enum.PERSON_2;
+						DIALOG = DIALOG_enum.IN_PERSON_2;
+						break;
+					case PERSON_2:
+						person_last = PERSON_enum.PERSON_1;
+						DIALOG = DIALOG_enum.IN_PERSON_2;
+						break;
+					case PERSON_UNKNOWN:
+						person_last = PERSON_enum.PERSON_1;
+						DIALOG = DIALOG_enum.IN_PERSON_1;
+						break;
+					}
+					Log.d("4", "---9->" + Dict_begin_person.replaceFirst(paragraph_content));
+					paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+				} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
+					DIALOG = DIALOG_enum.IN_AUTOR;
+					Log.d("4", "---10->" + Dict_begin_autor.replaceFirst(paragraph_content));
+					paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+				}
+				break;
+			case IN_PERSON_2:
+				if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+					switch (person_last) {
+					case PERSON_1:
+						person_last = PERSON_enum.PERSON_2;
+						DIALOG = DIALOG_enum.IN_PERSON_2;
+						break;
+					case PERSON_2:
+						person_last = PERSON_enum.PERSON_1;
+						DIALOG = DIALOG_enum.IN_PERSON_2;
+						break;
+					case PERSON_UNKNOWN:
+						person_last = PERSON_enum.PERSON_1;
+						DIALOG = DIALOG_enum.IN_PERSON_1;
+						break;
+					}
+					Log.d("4", "---11->" + Dict_begin_person.replaceFirst(paragraph_content));
+					paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+
+				} else if (0 != (index_Dict_begin_autor = Dict_begin_autor.FindFirst(paragraph_content))) {
+					DIALOG = DIALOG_enum.IN_AUTOR;
+					Log.d("4", "---12->" + Dict_begin_autor.replaceFirst(paragraph_content));
+					paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+
+				}
+				break;
+			default:
+			}			
+			
+			////////////////////////////
+			
+			
+			
+			
 			for (int i = 0; i < 3; i++) { // Вряд-ли больше 3-х раз сменится
 											// говорящий впредложении...
 
-				Log.d("4", "-----7->++++++++++++++++++++++++");			
-				Log.d("4", "-----7->" + paragraph_content);
-				Log.d("4", "-----7-> TAG_P =" + TAG_P);
-				Log.d("4", "-----7-> DIALOG =" + DIALOG);
-				Log.d("4", "-----7-> person_last =" + person_last);
-				
-				
+				Log.d("4", "-----13->~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+				Log.d("4", "-----13->" + paragraph_content);
+				Log.d("4", "-----13-> TAG_P =" + TAG_P);
+				Log.d("4", "-----13-> DIALOG =" + DIALOG);
+				Log.d("4", "-----13-> person_last =" + person_last);
+
 				switch (DIALOG) {
 				case IN_AUTOR:
 					if (0 != (index_Dict_begin_person = Dict_continue_person.FindFirst(paragraph_content))) {
@@ -289,12 +375,21 @@ class SAXParsDialogs extends DefaultHandler {
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
 						}
-						Log.d("4", "---8->" + Dict_continue_person.replaceFirst(paragraph_content));
+						Log.d("4", "---14->" + Dict_continue_person.replaceFirst(paragraph_content));
 						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 
 					}
 					break;
 				case IN_PERSON_1:
+					if (0 != (index_Dict_begin_autor = Dict_continue_autor.FindFirst(paragraph_content))) {
+						DIALOG = DIALOG_enum.IN_AUTOR;
+						Log.d("4", "---15->" + Dict_continue_autor.replaceFirst(paragraph_content));
+						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+
+					}
+
+					else
+
 					if (0 != (index_Dict_begin_person = Dict_continue_person.FindFirst(paragraph_content))) {
 						switch (person_last) {
 						case PERSON_1:
@@ -310,18 +405,19 @@ class SAXParsDialogs extends DefaultHandler {
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
 						}
-						Log.d("4", "---9->" + Dict_continue_person.replaceFirst(paragraph_content));						
-							paragraph_content = paragraph_content.substring(index_Dict_begin_person);
-
-					} else if (0 != (index_Dict_begin_autor = Dict_continue_autor.FindFirst(paragraph_content))) {
-						DIALOG = DIALOG_enum.IN_AUTOR;
-						Log.d("4", "---10->" + Dict_continue_autor.replaceFirst(paragraph_content));
-						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+						Log.d("4", "---16->" + Dict_continue_person.replaceFirst(paragraph_content));
+						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 
 					}
 					break;
 				case IN_PERSON_2:
-					if (0 != (index_Dict_begin_person = Dict_continue_person.FindFirst(paragraph_content))) {
+					if (0 != (index_Dict_begin_autor = Dict_continue_autor.FindFirst(paragraph_content))) {
+						DIALOG = DIALOG_enum.IN_AUTOR;
+						Log.d("4", "---17->" + Dict_continue_autor.replaceFirst(paragraph_content));
+
+						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+
+					} else if (0 != (index_Dict_begin_person = Dict_continue_person.FindFirst(paragraph_content))) {
 						switch (person_last) {
 						case PERSON_1:
 							person_last = PERSON_enum.PERSON_2;
@@ -336,15 +432,9 @@ class SAXParsDialogs extends DefaultHandler {
 							DIALOG = DIALOG_enum.IN_PERSON_1;
 							break;
 						}
-						Log.d("4", "---8->" + Dict_continue_person.replaceFirst(paragraph_content));
-						
-							paragraph_content = paragraph_content.substring(index_Dict_begin_person);
+						Log.d("4", "---18->" + Dict_continue_person.replaceFirst(paragraph_content));
 
-					} else if (0 != (index_Dict_begin_autor = Dict_continue_autor.FindFirst(paragraph_content))) {
-						DIALOG = DIALOG_enum.IN_AUTOR;
-						Log.d("4", "---9->" + Dict_continue_autor.replaceFirst(paragraph_content));
-
-						paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
+						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 
 					}
 					break;
@@ -352,11 +442,10 @@ class SAXParsDialogs extends DefaultHandler {
 				}
 
 			}
-			
-			
+
 			paragraph_content = "";
-			Log.d("4", "---11-> DIALOG =" + DIALOG);
-			Log.d("4", "---11-> person_last =" + person_last);			
+			Log.d("4", "---19-> DIALOG =" + DIALOG);
+			Log.d("4", "---19-> person_last =" + person_last);
 
 		}
 
