@@ -274,11 +274,11 @@ class SAXParsDialogs extends DefaultHandler {
 				if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
 					switch (person_last) {
 					case PERSON_1:
-						person_last = PERSON_enum.PERSON_2;
-						DIALOG = DIALOG_enum.IN_PERSON_2;
+						person_last = PERSON_enum.PERSON_1;
+						DIALOG = DIALOG_enum.IN_PERSON_1;
 						break;
 					case PERSON_2:
-						person_last = PERSON_enum.PERSON_1;
+						person_last = PERSON_enum.PERSON_2;
 						DIALOG = DIALOG_enum.IN_PERSON_2;
 						break;
 					case PERSON_UNKNOWN:
@@ -292,7 +292,7 @@ class SAXParsDialogs extends DefaultHandler {
 				}
 				break;
 			case IN_PERSON_1:
-				if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+/*				if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
 					switch (person_last) {
 					case PERSON_1:
 						person_last = PERSON_enum.PERSON_2;
@@ -314,9 +314,9 @@ class SAXParsDialogs extends DefaultHandler {
 					Log.d("4", "---10->" + Dict_begin_autor.replaceFirst(paragraph_content));
 					paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
 				}
-				break;
+*/				break;
 			case IN_PERSON_2:
-				if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
+/*				if (0 != (index_Dict_begin_person = Dict_begin_person.FindFirst(paragraph_content))) {
 					switch (person_last) {
 					case PERSON_1:
 						person_last = PERSON_enum.PERSON_2;
@@ -340,12 +340,12 @@ class SAXParsDialogs extends DefaultHandler {
 					paragraph_content = paragraph_content.substring(index_Dict_begin_autor);
 
 				}
-				break;
+*/				break;
 			default:
 			}			
 			
 			////////////////////////////
-			
+		
 			
 			
 			
