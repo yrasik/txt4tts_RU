@@ -422,5 +422,70 @@ public class Dict_handler {
 		return index_end;
 	}	
 	
+
+	
+	
+	
+	
+	
+	
+	public Dict_return_struct replaceFirst1(String Sentence_line) {
+		String line_DIC;
+		Dict_return_struct result = new Dict_return_struct();
+		
+		result.part_other = Sentence_line;
+		
+		Processing = Processing_status_enum.STATE_WORK;
+		try {
+
+		//	Log.d("4", "TXT_to_XML <-----Processed_line---first--->" + Processed_line);
+
+			// инициализируем поток вывода из файлу
+			FileInputStream fis_DIC = new FileInputStream(Full_Dict_File_Name);
+			InputStreamReader isr_DIC = new InputStreamReader(fis_DIC, Charset.forName("UTF-8"));
+			BufferedReader br_DIC = new BufferedReader(isr_DIC);
+			int i = 0;
+			boolean escape = false;
+
+			while (((line_DIC = br_DIC.readLine()) != null) && (escape == false)) {
+				i++;
+
+				if (get_Groups(line_DIC)) {
+					//result.index_of = FindFirst_Rex(Group_for_Find, result.part_other);    
+					
+					result.part_other = result.part_other.replaceFirst(Group_for_Find, Group_for_Replace);
+					result.part_other = result.part_other.replaceAll("null", "");
+
+					//result.part_completed = 
+				} 
+				else if (Processing == Processing_status_enum.STATE_EXIT) {
+					escape = true;
+				}
+			}
+			br_DIC.close();
+			isr_DIC.close();
+			// закрываем поток чтения файла
+			fis_DIC.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			result.part_other = Sentence_line;
+			Log.d("4", "TXT_to_XML <--ERROR-->" + e.getMessage()  );
+		}
+
+		//Log.d("4", "TXT_to_XML <-----Processed_line---return--->" + Processed_line);
+		return result;
+	}		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

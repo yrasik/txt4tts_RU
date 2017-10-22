@@ -202,6 +202,9 @@ class SAXParsDialogs extends DefaultHandler {
 						}
 
 						Log.d("4", "---2->" + Dict_begin_person.replaceFirst(paragraph_content));
+						Dict_return_struct st = Dict_begin_person.replaceFirst1(paragraph_content);
+						
+						
 						paragraph_content = paragraph_content.substring(index_Dict_begin_person);
 					}
 					break;
