@@ -34,7 +34,10 @@ public class Java_RU_text4tts
 	
 	
 	public static void main(String[] args) 
-	{				
+	{			
+		System.out.println("--------------START-------------");
+		
+		
 /*
 		TXT_to_XML  txt2xml = new TXT_to_XML();
 			
@@ -61,13 +64,13 @@ public class Java_RU_text4tts
 		
 
 		
-		
+	/*	
 		
 		TXT_to_XML  txt2xml = new TXT_to_XML();
 		
 	    System.out.println("txt -> xml");
 	 
-	    txt2xml.convert(AppPath + "tests/test2/Новый помощник учителя в Пайн-Клиринге.txt", AppPath + "tests/test2/res.xml");
+	    txt2xml.convert(AppPath + "tests/test2/пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.txt", AppPath + "tests/test2/res.xml");
 	    
 
         XML_Formatter.Format_simple(AppPath + "tests/test2/res.xml", AppPath + "tests/test2/res_p.xml");
@@ -78,7 +81,7 @@ public class Java_RU_text4tts
         XML_Formatter.Format_simple(AppPath + "tests/test2/resp.xml", AppPath + "tests/test2/resp_s.xml");
 
         
-        
+     */   
         
         XML_SAX_Find_Dialogs_in_Sentence Find_Dia = new XML_SAX_Find_Dialogs_in_Sentence();
         Find_Dia.split(AppPath, AppPath + "tests/test2/resp_s.xml", AppPath + "tests/test2/respsDia.xml");
